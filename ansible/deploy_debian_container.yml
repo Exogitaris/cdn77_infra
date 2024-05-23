@@ -1,0 +1,12 @@
+---
+- name: Deploy Debian Bookworm Container
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Deploy container
+      docker_container:
+        name: debian_container
+        image: debian:bookworm
+        command: /bin/bash
+        privileged: yes
+        tty: yes

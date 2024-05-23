@@ -1,0 +1,11 @@
+---
+- name: Monitoring docker compose deployment
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Deploy docker compose for monitoring
+      command: docker compose -f /deployment/docker_compose/monitoring/docker-compose.yml up -d
+      register: docker_compose_up
+
+    - debug:
+        var: docker_compose_up.stderr_lines
