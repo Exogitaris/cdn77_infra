@@ -49,4 +49,4 @@ services:
     privileged: true
     tty: true
     ports:
-      - 8083:8080
+      - 8083:80
