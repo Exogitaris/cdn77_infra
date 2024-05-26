@@ -40,4 +40,4 @@ services:
       - /deployment/grafana/dashboard.yml:/etc/grafana/provisioning/dashboards/dashboard.yml
       - /deployment/grafana/dashboard.json:/etc/grafana/provisioning/dashboards/dashboard.json
     ports:
-      - "9100:3000"
+      - 9100:3000

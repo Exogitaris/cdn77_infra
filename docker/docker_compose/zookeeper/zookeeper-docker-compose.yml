@@ -1,0 +1,91 @@
+version: '4'
+
+services:
+  zookeeper1:
+    image: debian:zookeeper
+    container_name: zookeeper1
+    #network_mode: bridge
+    networks:
+      zookeeper_network:
+        ipv4_address: 172.19.0.11
+    privileged: true
+    tty: true
+    volumes:
+      - /deployment/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
+      - /deployment/zookeeper/myid1:/var/lib/zookeeper/myid
+    ports:
+      - 21811:2181
+    command: sh -c "/opt/zookeeper/bin/zkServer.sh start || true && tail -f /dev/null"
+
+  zookeeper2:
+    image: debian:zookeeper
+    container_name: zookeeper2
+    #network_mode: bridge
+    networks:
+      zookeeper_network:
+        ipv4_address: 172.19.0.12
+    privileged: true
+    tty: true
+    volumes:
+      - /deployment/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
+      - /deployment/zookeeper/myid2:/var/lib/zookeeper/myid
+    ports:
+      - 21812:2181
+    command: sh -c "/opt/zookeeper/bin/zkServer.sh start || true && tail -f /dev/null"
+
+  zookeeper3:
+    image: debian:zookeeper
+    container_name: zookeeper3
+    #network_mode: bridge
+    networks:
+      zookeeper_network:
+        ipv4_address: 172.19.0.13
+    privileged: true
+    tty: true
+    volumes:
+      - /deployment/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
+      - /deployment/zookeeper/myid3:/var/lib/zookeeper/myid
+    ports:
+      - 21813:2181
+    command: sh -c "/opt/zookeeper/bin/zkServer.sh start || true && tail -f /dev/null"
+
+  zookeeper4:
+    image: debian:zookeeper
+    container_name: zookeeper4
+    #network_mode: bridge
+    networks:
+      zookeeper_network:
+        ipv4_address: 172.19.0.14
+    privileged: true
+    tty: true
+    volumes:
+      - /deployment/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
+      - /deployment/zookeeper/myid4:/var/lib/zookeeper/myid
+    ports:
+      - 21814:2181
+    command: sh -c "/opt/zookeeper/bin/zkServer.sh start || true && tail -f /dev/null"
+
+  zookeeper5:
+    image: debian:zookeeper
+    container_name: zookeeper5
+    #network_mode: bridge
+    networks:
+      zookeeper_network:
+        ipv4_address: 172.19.0.15
+    privileged: true
+    tty: true
+    volumes:
+      - /deployment/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
+      - /deployment/zookeeper/myid5:/var/lib/zookeeper/myid
+    ports:
+      - 21815:2181
+    command: sh -c "/opt/zookeeper/bin/zkServer.sh start || true && tail -f /dev/null"
+
+networks:
+  zookeeper_network:
+    name: zk_network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
+          gateway: 172.19.0.1

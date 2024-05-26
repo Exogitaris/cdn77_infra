@@ -1,0 +1,88 @@
+---
+- name: Build and run Zookeeper containers
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Build Zookeeper Docker image
+      docker_image:
+        build:
+          path: /deployment/docker/dockerfiles/zookeeper
+        name: debian
+        tag: zookeeper
+        source: build
+
+    - name: Deploy Zookeeper Docker compose
+      command: docker compose -f /deployment/docker/docker_compose/zookeeper/zookeeper-docker-compose.yml up -d
+      register: zk_compose_deploy
+
+    - name: Show status of Zookeeper Docker compose deployment
+      debug:
+        var: zk_compose_deploy.stderr_lines
+
+    - name: Wait for ZK instances to start
+      wait_for:
+        timeout: 10
+
+    - name: Get status of each ZK instance
+      shell: "docker exec {{ item }} /opt/zookeeper/bin/zkServer.sh status | grep -E 'Mode'"
+      loop:
+        - zookeeper1
+        - zookeeper2
+        - zookeeper3
+        - zookeeper4
+        - zookeeper5
+      register: zk_instances_status
+
+    - name: Print status of each ZK instance
+      debug:
+        msg: "Instance {{ item.item }} status: {{ item.stdout_lines }}"
+      loop: "{{ zk_instances_status.results }}"
+
+    - name: Simulate fail of 2 ZK instances
+      docker_container:
+        name: "{{ item }}"
+        state: stopped
+      loop:
+        - zookeeper4
+        - zookeeper5
+
+    - name: Get ZK running containers
+      shell: "docker ps | grep zookeeper"
+      register: zk_running_containers
+
+    - name: Print ZK running containers
+      debug:
+        var: zk_running_containers.stdout_lines
+
+    - name: Get status of running ZK instances
+      shell: "docker exec {{ item }} /opt/zookeeper/bin/zkServer.sh status | grep -E 'Mode'"
+      loop:
+        - zookeeper1
+        - zookeeper2
+        - zookeeper3
+      register: zk_running_instances_status
+
+    - name: Print status of running ZK instance (If some ZK instance is leader, than everything works as expected and ZK can run with 2 instances down)
+      debug:
+        msg: "Instance {{ item.item }} status: {{ item.stdout_lines }}"
+      loop: "{{ zk_running_instances_status.results }}"
+
+    - name: Create zk_test znode on zookeeper1 ZK instance
+      command: docker exec zookeeper1 /opt/zookeeper/bin/zkCli.sh -server 127.0.0.1:2181 create /zk_test my_data
+
+    - name: Get output of the znodes from zookeeper2 ZK instance
+      command: docker exec zookeeper2 /opt/zookeeper/bin/zkCli.sh -server 127.0.0.1:2181 ls /
+      register: znodes_output
+
+    - name: Print output of the znodes
+      debug: 
+        var: znodes_output
+
+    - name: Get 2 failed ZK instances back to online state
+      docker_container:
+        name: "{{ item }}"
+        state: started
+      loop:
+        - zookeeper4
+        - zookeeper5
+      
