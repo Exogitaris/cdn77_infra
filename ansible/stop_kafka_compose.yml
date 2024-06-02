@@ -4,7 +4,7 @@
   become: true
   tasks:
     - name: Stop Kafka Docker compose
-      command: docker compose -f /deployment/docker/docker_compose/kafka/kafka-docker-compose.yml down
+      command: docker compose -f /cdn77_infra/docker/docker_compose/kafka/kafka-docker-compose.yml down
       register: kafka_compose_deploy
 
     - name: Show status of Kafka Docker compose deployment

@@ -48,7 +48,7 @@
 
     - name: Copy svscanboot init.d script
       copy:
-        src: "/deployment/daemontools/init.d/svscanboot"
+        src: "/cdn77_infra/daemontools/init.d/svscanboot"
         dest: "/etc/init.d/svscanboot"
         mode: '0755'
       tags: install

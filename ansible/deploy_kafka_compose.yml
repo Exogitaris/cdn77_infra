@@ -6,13 +6,13 @@
     - name: Build Kafka Docker image
       docker_image:
         build:
-          path: /deployment/docker/dockerfiles/kafka
+          path: /cdn77_infra/docker/dockerfiles/kafka
         name: debian
         tag: kafka
         source: build
 
     - name: Deploy Kafka Docker compose
-      command: docker compose -f /deployment/docker/docker_compose/kafka/kafka-docker-compose.yml up -d
+      command: docker compose -f /cdn77_infra/docker/docker_compose/kafka/kafka-docker-compose.yml up -d
       register: kafka_compose_deploy
 
     - name: Show status of Kafka Docker compose deployment

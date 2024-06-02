@@ -11,8 +11,8 @@ services:
     privileged: true
     tty: true
     volumes:
-      - /deployment/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
-      - /deployment/zookeeper/myid1:/var/lib/zookeeper/myid
+      - /cdn77_infra/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
+      - /cdn77_infra/zookeeper/myid1:/var/lib/zookeeper/myid
     ports:
       - 21811:2181
     command: sh -c "/opt/zookeeper/bin/zkServer.sh start || true && tail -f /dev/null"
@@ -27,8 +27,8 @@ services:
     privileged: true
     tty: true
     volumes:
-      - /deployment/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
-      - /deployment/zookeeper/myid2:/var/lib/zookeeper/myid
+      - /cdn77_infra/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
+      - /cdn77_infra/zookeeper/myid2:/var/lib/zookeeper/myid
     ports:
       - 21812:2181
     command: sh -c "/opt/zookeeper/bin/zkServer.sh start || true && tail -f /dev/null"
@@ -43,8 +43,8 @@ services:
     privileged: true
     tty: true
     volumes:
-      - /deployment/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
-      - /deployment/zookeeper/myid3:/var/lib/zookeeper/myid
+      - /cdn77_infra/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
+      - /cdn77_infra/zookeeper/myid3:/var/lib/zookeeper/myid
     ports:
       - 21813:2181
     command: sh -c "/opt/zookeeper/bin/zkServer.sh start || true && tail -f /dev/null"
@@ -59,8 +59,8 @@ services:
     privileged: true
     tty: true
     volumes:
-      - /deployment/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
-      - /deployment/zookeeper/myid4:/var/lib/zookeeper/myid
+      - /cdn77_infra/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
+      - /cdn77_infra/zookeeper/myid4:/var/lib/zookeeper/myid
     ports:
       - 21814:2181
     command: sh -c "/opt/zookeeper/bin/zkServer.sh start || true && tail -f /dev/null"
@@ -75,8 +75,8 @@ services:
     privileged: true
     tty: true
     volumes:
-      - /deployment/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
-      - /deployment/zookeeper/myid5:/var/lib/zookeeper/myid
+      - /cdn77_infra/zookeeper/zoo.cfg:/opt/zookeeper/conf/zoo.cfg
+      - /cdn77_infra/zookeeper/myid5:/var/lib/zookeeper/myid
     ports:
       - 21815:2181
     command: sh -c "/opt/zookeeper/bin/zkServer.sh start || true && tail -f /dev/null"

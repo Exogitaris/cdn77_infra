@@ -4,7 +4,7 @@
   become: true
   tasks:
     - name: Stop Zookeeper Docker compose
-      command: docker compose -f /deployment/docker/docker_compose/zookeeper/zookeeper-docker-compose.yml down
+      command: docker compose -f /cdn77_infra/docker/docker_compose/zookeeper/zookeeper-docker-compose.yml down
       register: zk_compose_deploy
 
     - name: Show status of Zookeeper Docker compose deployment

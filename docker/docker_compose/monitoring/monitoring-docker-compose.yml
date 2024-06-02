@@ -21,7 +21,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - /deployment/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /cdn77_infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - 9090:9090
 
@@ -36,8 +36,8 @@ services:
       GF_AUTH_DISABLE_SIGNOUT_MENU: "true"
       GF_AUTH_DISABLE_LOGIN_FORM: "true"
     volumes:
-      - /deployment/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
-      - /deployment/grafana/dashboard.yml:/etc/grafana/provisioning/dashboards/dashboard.yml
-      - /deployment/grafana/dashboard.json:/etc/grafana/provisioning/dashboards/dashboard.json
+      - /cdn77_infra/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - /cdn77_infra/grafana/dashboard.yml:/etc/grafana/provisioning/dashboards/dashboard.yml
+      - /cdn77_infra/grafana/dashboard.json:/etc/grafana/provisioning/dashboards/dashboard.json
     ports:
       - 9100:3000

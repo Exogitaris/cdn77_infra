@@ -8,8 +8,8 @@ services:
     privileged: true
     tty: true
     volumes:
-      - /deployment/nginx/web_server_nginx.conf:/etc/nginx/nginx.conf
-      - /deployment/nginx/web_server.conf:/etc/nginx/conf.d/web_server.conf
+      - /cdn77_infra/nginx/web_server_nginx.conf:/etc/nginx/nginx.conf
+      - /cdn77_infra/nginx/web_server.conf:/etc/nginx/conf.d/web_server.conf
     #ports:
     #  - 8084:8080
     command: sh -c "service nginx start && cp -r /var/log/nginx/ /www/data/ && tail -f /dev/null"
@@ -21,8 +21,8 @@ services:
     privileged: true
     tty: true
     volumes:
-      - /deployment/nginx/proxy_server_nginx.conf:/etc/nginx/nginx.conf
-      - /deployment/nginx/proxy_server.conf:/etc/nginx/conf.d/proxy_server.conf
+      - /cdn77_infra/nginx/proxy_server_nginx.conf:/etc/nginx/nginx.conf
+      - /cdn77_infra/nginx/proxy_server.conf:/etc/nginx/conf.d/proxy_server.conf
     #ports:
     #  - 8085:8080
     command: sh -c "mkdir -p /data/nginx/cache && service nginx start && tail -f /dev/null"

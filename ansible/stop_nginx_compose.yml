@@ -4,7 +4,7 @@
   become: true
   tasks:
     - name: Deploy nginx_web_server container
-      command: docker compose -f /deployment/docker/docker_compose/nginx/nginx-docker-compose.yml down
+      command: docker compose -f /cdn77_infra/docker/docker_compose/nginx/nginx-docker-compose.yml down
       register: nginx_docker_compose_deployment
 
     - name: Status of stopping Nginx containers

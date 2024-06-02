@@ -6,13 +6,13 @@
     - name: Build Zookeeper Docker image
       docker_image:
         build:
-          path: /deployment/docker/dockerfiles/zookeeper
+          path: /cdn77_infra/docker/dockerfiles/zookeeper
         name: debian
         tag: zookeeper
         source: build
 
     - name: Deploy Zookeeper Docker compose
-      command: docker compose -f /deployment/docker/docker_compose/zookeeper/zookeeper-docker-compose.yml up -d
+      command: docker compose -f /cdn77_infra/docker/docker_compose/zookeeper/zookeeper-docker-compose.yml up -d
       register: zk_compose_deploy
 
     - name: Show status of Zookeeper Docker compose deployment

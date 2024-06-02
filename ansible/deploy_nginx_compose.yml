@@ -6,13 +6,13 @@
     - name: Build Nginx Docker image
       docker_image:
         build:
-          path: /deployment/docker/dockerfiles/nginx
+          path: /cdn77_infra/docker/dockerfiles/nginx
         name: debian
         tag: nginx
         source: build
 
     - name: Deploy nginx_web_server container
-      command: docker compose -f /deployment/docker/docker_compose/nginx/nginx-docker-compose.yml up -d nginx_web_server
+      command: docker compose -f /cdn77_infra/docker/docker_compose/nginx/nginx-docker-compose.yml up -d nginx_web_server
       register: docker_compose_web_server
 
     - name: Get info about nginx_web_server container
@@ -26,10 +26,10 @@
     - name: Generate proxy_server_nginx.conf from jinja template
       template:
         src: templates/nginx_proxy_server_conf.j2
-        dest: /deployment/nginx/proxy_server_nginx.conf
+        dest: /cdn77_infra/nginx/proxy_server_nginx.conf
 
     - name: Deploy proxy_web_server container
-      command: docker compose -f /deployment/docker/docker_compose/nginx/nginx-docker-compose.yml up -d nginx_proxy_server
+      command: docker compose -f /cdn77_infra/docker/docker_compose/nginx/nginx-docker-compose.yml up -d nginx_proxy_server
       register: docker_compose_proxy_server
 
     - name: Get info about nginx_proxy_server container
