@@ -1,0 +1,21 @@
+---
+- name: Check if scripts under Deamontools are logging
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Tail last 15 lines of load average monitoring log
+      command: tail -n 15 /service/load_average_monitoring/log/main/current
+      register: load_avg_log_output
+
+    - name: Print load average monitoring log output
+      debug:
+        msg: "{{ load_avg_log_output.stdout_lines }}"
+
+    - name: Tail last 15 lines of nginx stub status monitoring log
+      command: tail -n 15 /service/nginx_stub_status_monitoring/log/main/current
+      register: nginx_stub_status_log_output
+
+    - name: Print nginx stub status monitoring log output
+      debug:
+        msg: "{{ nginx_stub_status_log_output.stdout_lines }}"
+
