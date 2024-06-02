@@ -1,0 +1,3 @@
+#!/bin/sh
+exec 2>&1
+exec /deployment/daemontools/scripts/monitor_nginx_stub_status.sh

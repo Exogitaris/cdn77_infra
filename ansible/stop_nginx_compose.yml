@@ -1,0 +1,12 @@
+---
+- name: Stop and remove Nginx containers
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Deploy nginx_web_server container
+      command: docker compose -f /deployment/docker/docker_compose/nginx/nginx-docker-compose.yml down
+      register: nginx_docker_compose_deployment
+
+    - name: Status of stopping Nginx containers
+      debug:
+        var: nginx_docker_compose_deployment.stderr_lines

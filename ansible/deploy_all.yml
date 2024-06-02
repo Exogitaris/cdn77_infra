@@ -1,0 +1,12 @@
+---
+- import_playbook: deploy_monitoring_compose.yml
+  tags: monitoring
+
+- import_playbook: deploy_nginx_compose.yml
+  tags: nginx
+
+- import_playbook: deploy_zookeeper_compose.yml
+  tags: zookeeper
+
+- import_playbook: deploy_kafka_compose.yml
+  tags: kafka

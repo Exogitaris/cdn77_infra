@@ -1,0 +1,66 @@
+---
+- name: Test Nginx functionality
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Get info about nginx_web_server container
+      docker_container_info:
+          name: "nginx_web_server"
+      register: nginx_web_server_info
+
+    - name: Get content of /data/ path of nginx_web_server
+      command: curl -v {{ nginx_web_server_info['container']['NetworkSettings']['IPAddress'] }}/data/
+      register: nginx_web_server_output
+
+    - name: Output of nginx_web_server /data/ path
+      debug:
+        var: nginx_web_server_output.stdout_lines
+
+    - name: Download /data/nginx/error.log from nginx_web_server
+      get_url:
+        url: "http://{{ nginx_web_server_info['container']['NetworkSettings']['IPAddress'] }}/data/nginx/error.log"
+        dest: /tmp/error.log
+
+    - name: Remove fetched error.log file
+      file:
+        path: /tmp/error.log
+        state: absent
+
+    - name: Get content of host.access.log in nginx_web_server to verify, that we download some file from server
+      command: docker exec nginx_web_server cat /var/log/nginx/host.access.log
+      register: access_log_output
+
+    - name: Show content of host.access.log in nginx_web_server container
+      debug:
+        var: access_log_output.stdout_lines
+
+    - name: Get info about nginx_proxy_server container
+      docker_container_info:
+          name: "nginx_proxy_server"
+      register: nginx_proxy_server_info
+
+    - name: Download /data/nginx/error.log from nginx_proxy_server
+      get_url:
+        url: "http://{{ nginx_proxy_server_info['container']['NetworkSettings']['IPAddress'] }}/data/nginx/error.log"
+        dest: /tmp/error.log
+
+    - name: Get content of /data/nginx/cache folder from nginx_proxy_server to verify, that previously downloaded file is cached
+      command: docker exec nginx_proxy_server ls -la /data/nginx/cache
+      register: cache_folder_output        
+
+    - name: Show content of /data/nginx/cache folder
+      debug:
+        var: cache_folder_output.stdout_lines
+
+    - name: Remove fetched error.log file
+      file:
+        path: /tmp/error.log
+        state: absent
+
+    - name: Get status of GET request to nginx_proxy_server
+      command: curl -I {{ nginx_proxy_server_info['container']['NetworkSettings']['IPAddress'] }}/data/nginx/error.log
+      register: curl_get_output
+
+    - name: Show status of the GET command to check, if we got cached data. If X-Proxy-Cache = HIT, than caching works 
+      debug:
+        var: curl_get_output.stdout_lines	

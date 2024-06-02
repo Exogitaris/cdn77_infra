@@ -1,0 +1,42 @@
+---
+- name: Test Kafka functionality
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Create topic in kafka1 container
+      shell: docker exec kafka1 /opt/kafka/bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092
+      register: created_topic_output
+      tags: create_topic
+
+    - name: Show created topic
+      debug:
+        var: created_topic_output.stdout_lines
+      tags: create_topic
+
+    - name: Verify, that kafka containers are using our Zookeeper cluster by listing the content of Zookeeper znodes
+      shell: docker exec zookeeper5 /opt/zookeeper/bin/zkCli.sh -server 127.0.0.1:2181 ls /
+      register: zookeeper_znodes
+
+    - name: Show output of Zookeeper znodes
+      debug:
+        var: zookeeper_znodes.stdout_lines
+
+    - name: Send message from kafka1 and kafka2 ( producers ) to created topic
+      shell: docker exec "{{ item.instance }}" sh -c "echo '{{ item.message }}' | /opt/kafka/bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092"
+      loop:      
+        - { instance: 'kafka1', message: 'Hello, my name is Kafka1' }
+        - { instance: 'kafka2', message: 'Hello, my name is Kafka2' }
+
+    - name: Get messages from created topic on kafka3 and kafka4 ( consumers )
+      shell: docker exec "{{ item }}" /opt/kafka/bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --max-messages 2 --bootstrap-server localhost:9092
+      register: consumer_output
+      tags: get_messages
+      loop:
+        - kafka3
+        - kafka4
+
+    - name: Show messages from kafka3 and kafka4 consumer
+      debug:
+        msg: "Kafka consumer {{ item.item }} message: {{ item.stdout_lines }}"
+      tags: get_messages
+      loop: "{{ consumer_output.results }}"

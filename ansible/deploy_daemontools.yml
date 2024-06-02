@@ -1,0 +1,64 @@
+---
+- name: Execute tasks to set up services
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Create directories for load average monitoring
+      file:
+        path: /service/load_average_monitoring/log/main
+        state: directory
+        mode: '0755'
+
+    - name: Create directories for nginx stub status monitoring
+      file:
+        path: /service/nginx_stub_status_monitoring/log/main
+        state: directory
+        mode: '0755'
+
+    - name: Copy load average monitoring run script
+      copy:
+        src: /deployment/daemontools/service/load_average_monitoring/run
+        dest: /service/load_average_monitoring/run
+        mode: '0755'
+
+    - name: Copy load average monitoring log run script
+      copy:
+        src: /deployment/daemontools/service/load_average_monitoring/log/run
+        dest: /service/load_average_monitoring/log/run
+        mode: '0755'
+
+    - name: Set executable permissions for load average monitoring run script
+      file:
+        path: /service/load_average_monitoring/run
+        mode: '0755'
+
+    - name: Set executable permissions for load average monitoring log run script
+      file:
+        path: /service/load_average_monitoring/log/run
+        mode: '0755'
+
+    - name: Copy nginx stub status run script
+      copy:
+        src: /deployment/daemontools/service/nginx_stub_status_monitoring/run
+        dest: /service/nginx_stub_status_monitoring/run
+        mode: '0755'
+
+    - name: Copy nginx stub status log run script
+      copy:
+        src: /deployment/daemontools/service/nginx_stub_status_monitoring/log/run
+        dest: /service/nginx_stub_status_monitoring/log/run
+        mode: '0755'
+
+    - name: Set executable permissions for nginx stub status run script
+      file:
+        path: /service/nginx_stub_status_monitoring/run
+        mode: '0755'
+
+    - name: Set executable permissions for nginx stub status log run script
+      file:
+        path: /service/nginx_stub_status_monitoring/log/run
+        mode: '0755'
+
+    - name: Start svscanboot
+      shell: csh -cf '/command/svscanboot &'
+

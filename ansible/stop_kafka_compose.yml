@@ -1,0 +1,12 @@
+---
+- name: Stop and remove Kafka containers
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Stop Kafka Docker compose
+      command: docker compose -f /deployment/docker/docker_compose/kafka/kafka-docker-compose.yml down
+      register: kafka_compose_deploy
+
+    - name: Show status of Kafka Docker compose deployment
+      debug:
+        var: kafka_compose_deploy.stderr_lines

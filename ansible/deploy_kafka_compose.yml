@@ -1,0 +1,20 @@
+---
+- name: Build and run Kafka containers
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Build Kafka Docker image
+      docker_image:
+        build:
+          path: /deployment/docker/dockerfiles/kafka
+        name: debian
+        tag: kafka
+        source: build
+
+    - name: Deploy Kafka Docker compose
+      command: docker compose -f /deployment/docker/docker_compose/kafka/kafka-docker-compose.yml up -d
+      register: kafka_compose_deploy
+
+    - name: Show status of Kafka Docker compose deployment
+      debug:
+        var: kafka_compose_deploy.stderr_lines

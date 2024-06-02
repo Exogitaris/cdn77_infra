@@ -1,0 +1,11 @@
+---
+- name: Stop and remove monitoring containers
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Stop docker compose for monitoring
+      command: docker compose -f /deployment/docker/docker_compose/monitoring/monitoring-docker-compose.yml down
+      register: docker_compose_down
+
+    - debug:
+        var: docker_compose_down.stderr_lines

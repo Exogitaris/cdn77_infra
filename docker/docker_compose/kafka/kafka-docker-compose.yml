@@ -1,0 +1,67 @@
+version: '4'
+
+services:
+  kafka1:
+    image: debian:kafka
+    container_name: kafka1
+    #network_mode: bridge
+    networks:
+      zookeeper_network:
+        ipv4_address: 172.19.0.21
+    privileged: true
+    tty: true
+    volumes:
+      - /deployment/kafka/server1.properties:/opt/kafka/config/server.properties
+    ports:
+      - 10021:9092
+    command: sh -c "/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties || true && tail -f /dev/null"
+
+  kafka2:
+    image: debian:kafka
+    container_name: kafka2
+    #network_mode: bridge
+    networks:
+      zookeeper_network:
+        ipv4_address: 172.19.0.22
+    privileged: true
+    tty: true
+    volumes:
+      - /deployment/kafka/server2.properties:/opt/kafka/config/server.properties
+    ports:
+      - 10022:9092
+    command: sh -c "/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties || true && tail -f /dev/null"
+
+  kafka3:
+    image: debian:kafka
+    container_name: kafka3
+    #network_mode: bridge
+    networks:
+      zookeeper_network:
+        ipv4_address: 172.19.0.23
+    privileged: true
+    tty: true
+    volumes:
+      - /deployment/kafka/server3.properties:/opt/kafka/config/server.properties
+    ports:
+      - 10023:9092
+    command: sh -c "/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties || true && tail -f /dev/null"
+
+  kafka4:
+    image: debian:kafka
+    container_name: kafka4
+    #network_mode: bridge
+    networks:
+      zookeeper_network:
+        ipv4_address: 172.19.0.24
+    privileged: true
+    tty: true
+    volumes:
+      - /deployment/kafka/server4.properties:/opt/kafka/config/server.properties
+    ports:
+      - 10024:9092
+    command: sh -c "/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties || true && tail -f /dev/null"
+
+networks:
+  zookeeper_network:
+    name: zk_network
+    external: true

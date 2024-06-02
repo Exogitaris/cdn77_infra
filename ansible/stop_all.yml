@@ -1,0 +1,12 @@
+---
+- import_playbook: stop_kafka_compose.yml
+  tags: kafka
+
+- import_playbook: stop_zookeeper_compose.yml
+  tags: zookeeper
+
+- import_playbook: stop_nginx_compose.yml
+  tags: nginx
+
+- import_playbook: stop_monitoring_compose.yml
+  tags: monitoring

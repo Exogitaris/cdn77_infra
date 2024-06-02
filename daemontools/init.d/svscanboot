@@ -1,0 +1,48 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          svscanboot
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: svscanboot at boot
+# Description:       This script starts svscanboot at boot time.
+### END INIT INFO
+
+# Change this to the path of svscanboot
+SVSCANBOOT="/command/svscanboot"
+
+# Function to start the service
+do_start() {
+    $SVSCANBOOT &
+}
+
+# Function to stop the service
+do_stop() {
+    # Since svscanboot runs as a process, we can't really "stop" it easily here.
+    # You might need to manually kill the process if needed.
+    :
+}
+
+case "$1" in
+    start)
+        echo "Starting svscanboot"
+        do_start
+        ;;
+    stop)
+        echo "Stopping svscanboot"
+        do_stop
+        ;;
+    restart)
+        echo "Restarting svscanboot"
+        do_stop
+        sleep 1
+        do_start
+        ;;
+    *)
+        echo "Usage: /etc/init.d/svscanboot {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0
